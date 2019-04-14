@@ -1,0 +1,103 @@
+author = "AlphaDog";
+onloadname = "FOX: Horizon Hounds";
+onLoadMission = "Infiltrate a Syndikat controlled island and retrieve intel on their secret operations.";
+loadScreen =  "images\loadImg.jpg";
+overviewPicture = "images\loadImg.jpg";
+overviewText = "As CTRG operative, Agent Fox, sneak onto a heavily guarded Syndikat island to retrieve their operations playbook.";
+
+doneKeys[] = {"MissionCompleted"};
+
+//--------------------------------------------------------------
+//---------------------FHQ Task Tracker-------------------------
+//-----------------Alpha's Custom Functions---------------------
+class CfgFunctions 
+{
+	#include "functions\fhq_tasktracker.hpp" // FHQ Task Tracker
+	#include "AlphaDog\alphadog_Funcs.hpp" // My personal functions
+};
+
+class CfgIdentities
+{
+	class Fox
+	{
+		name = Fox;
+		face = WhiteHead_10;
+		glasses = "G_Balaclava_TI_blk_F";
+		speaker = Male03ENG;
+		pitch = 1;
+	};
+};
+
+class CfgMusic
+{
+	tracks[] = {BlackMarket,Deception,Elusive,Hitman,Incognito,Operative,Scout,Tactical};
+	
+	class BlackMarket
+	{
+		name = "Black Market";
+		sound[] = {"Music\BlackMarket.ogg", 1.25, 1};
+	};
+	class Deception
+	{
+		name = "Deception";
+		sound[] = {"Music\Deception.ogg", 1.25, 1};
+	};
+	class Elusive
+	{
+		name = "Elusive";
+		sound[] = {"Music\Elusive.ogg", 1.25, 1};
+	};
+	class Hitman
+	{
+		name = "Hitman";
+		sound[] = {"Music\Hitman.ogg", 1.25, 1};
+	};
+	class Hotell
+	{
+		name = "Hotell 2";
+		sound[] = {"Music\Hotell_2.ogg", 1.5, 1};
+	};
+	class Incognito
+	{
+		name = "Incognito";
+		sound[] = {"Music\Incognito.ogg", 1.25, 1};
+	};
+	class Operative
+	{
+		name = "Operative";
+		sound[] = {"Music\Operative.ogg", 1.25, 1};
+	};
+	class Scout
+	{
+		name = "Scout";
+		sound[] = {"Music\Scout.ogg", 1.25, 1};
+	};
+	class Subsonic
+	{
+		name = "Subsonic";
+		sound[] = {"Music\Subsonic.ogg", 1.25, 1};
+	};
+	class Tactical
+	{
+		name = "Tactical";
+		sound[] = {"Music\Tactical.ogg", 1.25, 1};
+	};
+};
+
+class CfgDebriefing
+{
+	class End_Win
+	{
+		title = "Mission Completed";
+		subtitle = "Syndikat Intel Secured";
+		description = "With the Syndikat's operations playbook in Fox's hands, he can now move forward with his plans for the Syndikat and CSAT on Tanoa.<br/><br/>If you liked/disliked this mission be sure to give it a rating, and/or tell me what you thought about it in the comments. Also, if you have not played any of my other missions, I suggest giving them a try. You can find a link to the my mission collection on this mission's Steam workshop page. Thank you for playing, and I hope you had fun!";
+		pictureBackground = "images\loadImg.jpg";
+	};
+	class End_AllDown
+	{
+		title = "Mission Failed";
+		subtitle = "All units are down!";
+		description = "Agent Fox was killed!";
+		pictureBackground = "images\loadImg.jpg";
+	};
+};
