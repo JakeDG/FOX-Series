@@ -30,14 +30,22 @@ sleep 1.0;
 	
 sleep 5.0;
 playMusic "Hotell";
-["<t  size = '1.0'>Two weeks after Sabre Team's arrival...</t>", safeZoneX+0.45, safeZoneY+safeZoneH-0.85, 4, 4, 0, 200] spawn BIS_fnc_dynamicText;
-sleep 10.0;
+//["<t  size = '1.0'>Two weeks after Sabre Team's arrival...</t>", safeZoneX+0.45, safeZoneY+safeZoneH-0.85, 4, 4, 0, 200] spawn BIS_fnc_dynamicText;
+101 cutText ["<t size='2.0'>Two weeks after Sabre Team's arrival...</t>", "BLACK", 4.0,true,true];
+sleep 6.0;
+101 cutFadeOut 1.0;
+sleep 4.0;
 
-["<t size='1.0' color='#D22E2E'>AlphaDog Presents...</t>", safeZoneX+0.45, safeZoneY+safeZoneH-0.85, 4, 4, 0, 200] spawn BIS_fnc_dynamicText;
-sleep 10.0;
+//["<t size='1.0' color='#D22E2E'>AlphaDog Presents...</t>", safeZoneX+0.45, safeZoneY+safeZoneH-0.85, 4, 4, 0, 200] spawn BIS_fnc_dynamicText;
+101 cutText ["<t size='2.0' color='#D22E2E'>AlphaDog Presents...</t>", "BLACK", 4.0,true,true];
+sleep 6.0;
+101 cutFadeOut 1.0;
+sleep 4.0;
 
-["<t  size = '3.0' shadow = '0'color='#D22E2E'>FOX:</t><t  size = '3.0'> Horizon Hounds</t>", safeZoneX+0.45,safeZoneY+safeZoneH-0.9, 8, 7, 0, 200] spawn BIS_fnc_dynamicText;
-sleep 5.0;
+//["<t  size = '3.0' shadow = '0'color='#D22E2E'>FOX:</t><t  size = '3.0'> Horizon Hounds</t>", safeZoneX+0.45,safeZoneY+safeZoneH-0.9, 8, 7, 0, 200] spawn BIS_fnc_dynamicText;
+101 cutText ["<t  size = '5.0' shadow = '0' color='#D22E2E'>FOX:<br/></t><t  size = '5.0' shadow = '0'>Horizon Hounds</t>", "BLACK", 4.0,true,true];
+sleep 4.0;
+101 cutFadeOut 4.5;
 
 100 cutText ["", "BLACK IN", 15];
 player enableSimulation true;

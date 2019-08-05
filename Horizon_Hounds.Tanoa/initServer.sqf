@@ -11,7 +11,10 @@ execVM "Scripts\laptopOptions.sqf";
 // Add action to ammoboxes
 {
 	[_x, [ "<t color='#D22E2E'>Open Virtual Arsenal</t>",{ ["Open",true] spawn BIS_fnc_arsenal; },[],10,true,true,"","(_target distance _this) < 3.5"] ] remoteExec [ "addAction", [0,-2] select (isMultiplayer && isDedicated), _x];
-} forEach [arsenal_1,arsenal_2,arsenal_drone];
+} forEach [arsenal_1,arsenal_2];
+
+// Add action to mobile arsenal drone, ensure player operating it cannot use the arsenal while using it
+[arsenal_drone, [ "<t color='#D22E2E'>Open Virtual Arsenal</t>",{ ["Open",true] spawn BIS_fnc_arsenal; },[],10,true,true,"","(_target distance _this) < 5 && ((UAVControl _target) select 1) != 'DRIVER' && ((UAVControl _target) select 1) != 'GUNNER'"] ] remoteExec [ "addAction", [0,-2] select (isMultiplayer && isDedicated), (alive arsenal_drone)];
 
 /******************** MISSION PARAMETERS ***********************/
 
@@ -70,6 +73,17 @@ s_officer setDir (_offPosDir select 1);
 			_x enablegunlights "forceOn";
 		};
 	} forEach allUnits;
+};
+
+// Randomize fuel levels for all cars except the starting jetski and any enemy vehicle patrols
+[] spawn 
+{
+	{
+		if (_x != startVeh && isNull driver _x) then 
+		{
+			_x setFuel (random [0.20, 0.50, 0.90]);
+		};
+	} forEach vehicles;
 };
 
 // Create ambient music track list

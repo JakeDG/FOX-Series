@@ -18,7 +18,18 @@ Mission Version:
 
 	Released: January 22, 2019
 	
-	V1.0 - Official Release
+	v1.0 - Official Release
+	
+	v1.01
+		- Fixed issues caused by the Contact update involving my custom functions triggering objectives to be completed
+		- Updated functions library
+		- Added a wrecked boat to the shore near the beach with the villagers to add some more cover
+		- Adjusted loadscreen intro text to be more centered
+		- Adjusted Fox's loadout a bit (His sidearm is now a 4-five .45 ACP)
+		- Fixed the MAD drone so that the pilot can't have automatic access to the arsenal when not near the drone
+		- Subtitles are now displayed using a new subtitle function
+		- Randomized fuel levels of most vehicles
+		
 	
 *********************************************************************************************************************************
 

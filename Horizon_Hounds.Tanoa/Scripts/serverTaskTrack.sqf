@@ -11,7 +11,7 @@ if (!isServer) exitWith {};
 			[_x] spawn 
 			{
 				_cont = _this select 0;
-				waitUntil {sleep 1.0; (_cont getVariable "isPickPut_H") || ["usbTask"] call FHQ_fnc_ttAreTasksCompleted};
+				waitUntil {sleep 1.0; (_cont getVariable ["isPickPut_H",false]) || ["usbTask"] call FHQ_fnc_ttAreTasksCompleted};
 				
 				if (!(["usbTask"] call FHQ_fnc_ttAreTasksCompleted)) then
 				{
@@ -28,18 +28,21 @@ if (!isServer) exitWith {};
 		};
 	} forEach _contactArray;
 	
-	waitUntil {sleep 1.0; (_contact getVariable "isPickPut_H")};
+	waitUntil {sleep 1.0; (_contact getVariable ["isPickPut_H",false])};
 	["usbTask", "succeeded"] call FHQ_fnc_ttSetTaskState;
 	sleep 4.0;
 	
 	// Save the game in singleplayer
-	if (savingEnabled) then {saveGame;};
+	waitUntil {isNil "AD_subtitle_running"};
+	if (!isMultiplayer && savingEnabled) then {saveGame;};
 	sleep 1.0;
 	
-	[comp_1, "Download Files", "Downloading Files", "Download Finished", "Download Interrupted"] call AD_fnc_hack;
+	[comp_1, "Download Files", 12, "Downloading Files", "Download Finished", "Download Interrupted"] call AD_fnc_hack;
 	
-	["RadioAmbient2"] call AD_fnc_soundAmp;
-	["<t size='0.6'><t color='#D22E2E'>Shadow:</t> Good job getting the key, sir. It's a shame we couldn't save Rook.  Now make sure he didn't die in vain. Get to Ravi-ta Island and access the Syndikat lieutenant's laptop. Shadow Out. </t>", safeZoneX+0.45, safeZoneY+safeZoneH-0.3, 12, 0.25, 0, 198] remoteExec ["BIS_fnc_dynamicText", [0,-2] select (isMultiplayer && isDedicated)];
+	// Shadow message
+	[
+		["Shadow", "Goddammit, Sabre! Good job getting the key, sir. It's a shame we couldn't save Rook.  Now make sure he didn't die in vain. Get to Ravi-ta Island and access the Syndikat lieutenant's laptop. Shadow Out.",10.0,"RadioAmbient2"], AD_fnc_subtitle
+	] remoteExec ["call", [0,-2] select (isMultiplayer && isDedicated)];
 	sleep 12.0;
 	
 	// Create markers for the laptop's locations
@@ -61,30 +64,41 @@ if (!isServer) exitWith {};
 	// Hack task completed
 	[] spawn
 	{
-		waitUntil {sleep 1.0; comp_1 getVariable "isHacked"};
+		waitUntil {sleep 1.0; comp_1 getVariable ["isHacked",false]};
 		["hackTask", "succeeded"] call FHQ_fnc_ttSetTaskState;
 		sleep 3.0;
 		
 		// Save the game in singleplayer
-		if (savingEnabled) then {saveGame;};
+		waitUntil {isNil "AD_subtitle_running"};
+		if (!isMultiplayer && savingEnabled) then {saveGame;};
 		sleep 1.0;
 		
-		["RadioAmbient6"] call AD_fnc_soundAmp;
-		["<t size='0.6'><t color='#D22E2E'>Shadow:</t> Excellent job sir, we now have their playbook. You can leave now or if you want to stay and give the Syndikat a taste of what's coming, then be my guest. See you on the mainland. Shadow out.</t>", safeZoneX+0.45, safeZoneY+safeZoneH-0.3, 12, 0.25, 0, 198] remoteExec ["BIS_fnc_dynamicText", [0,-2] select (isMultiplayer && isDedicated)];
+		// Shadow message
+		[
+			["Shadow", "Excellent job sir, we now have their playbook. You can leave now or if you want to stay and give the Syndikat a taste of what's coming, then be my guest. See you on the mainland. Shadow out.",10.0,"RadioAmbient6"], AD_fnc_subtitle
+		] remoteExec ["call", [0,-2] select (isMultiplayer && isDedicated)];
 	};
 	sleep 5.0;
 	
 	// Save Civilians task
 	if (isNil "civsSaved") then 
 	{
-		["RadioAmbient6"] call AD_fnc_soundAmp;
-		["<t size='0.6'><t color='#D22E2E'>Shadow:</t> Sir, one more thing. It looks like some of the villagers fled into the woods.</t>", safeZoneX+0.45, safeZoneY+safeZoneH-0.3, 7, 0.25, 0, 198] remoteExec ["BIS_fnc_dynamicText", [0,-2] select (isMultiplayer && isDedicated)];
-		sleep 9.0;
-		
-		["<t size='0.6'><t color='#D22E2E'>Shadow:</t> The lieutenant's men have them cornered and are probably gonna execute them.</t>", safeZoneX+0.45, safeZoneY+safeZoneH-0.3, 7, 0.25, 0, 198] remoteExec ["BIS_fnc_dynamicText", [0,-2] select (isMultiplayer && isDedicated)];
-		sleep 9.0;
-		
-		["<t size='0.6'><t color='#D22E2E'>Shadow:</t> I know we shouldn't get involved, but if you want to do something about it I'm sending you their position. Shadow out.</t>", safeZoneX+0.45, safeZoneY+safeZoneH-0.3, 8, 0.25, 0, 198] remoteExec ["BIS_fnc_dynamicText", [0,-2] select (isMultiplayer && isDedicated)];
+		// Shadow message
+		[
+			["Shadow", "Sir, one more thing. It looks like some of the villagers fled into the woods.",8.0,"RadioAmbient6"], AD_fnc_subtitle
+		] remoteExec ["call", [0,-2] select (isMultiplayer && isDedicated)];
+		sleep 10.0;
+
+		// Shadow message
+		[
+			["Shadow", "The lieutenant's men have them cornered and are probably gonna execute them.",10.0,"RadioAmbient2"], AD_fnc_subtitle
+		] remoteExec ["call", [0,-2] select (isMultiplayer && isDedicated)];
+		sleep 12.0;
+
+		// Shadow message
+		[
+			["Shadow", "I know we shouldn't get involved, but if you want to do something about it I'm sending you their position. Shadow out.",10.0,"RadioAmbient8"], AD_fnc_subtitle
+		] remoteExec ["call", [0,-2] select (isMultiplayer && isDedicated)];
 		sleep 5.0;
 		
 		[player, [["saveTask", "secTasks"], "Save the villagers!", "Save the Villagers", "", getMarkerPos "civsMkr", "created", "HELP"]] call FHQ_fnc_ttAddTasks;
@@ -107,15 +121,18 @@ if (!isServer) exitWith {};
 					_x setCaptive false;
 				} forEach units civsCaptive;
 				
-				// Villagers thank Fox
-				["<t size='0.6'><t color='#D22E2E'>Villager:</t> Oh thank God, I thought those guys were gonna kill us! Whoever you are, thank you. We owe you our lives!</t>", safeZoneX+0.45, safeZoneY+safeZoneH-0.3, 10, 0.25, 0, 198] remoteExec ["BIS_fnc_dynamicText", [0,-2] select (isMultiplayer && isDedicated)];
+				// Villagers message
+				[
+					["Villager", "Oh thank God, I thought those guys were gonna kill us! Whoever you are, thank you. We owe you our lives!",10.0], AD_fnc_subtitle
+				] remoteExec ["call", [0,-2] select (isMultiplayer && isDedicated)];
 			}
 			else
 			{
 				["saveTask", "failed"] call FHQ_fnc_ttSetTaskState;
 				
-				["RadioAmbient8"] call AD_fnc_soundAmp;
-				["<t size='0.6'><t color='#D22E2E'>Shadow:</t> Damn! They just shot them! Those Syndikat bastards will get what's coming to 'em soon enough!</t>", safeZoneX+0.45, safeZoneY+safeZoneH-0.3, 10, 0.25, 0, 198] remoteExec ["BIS_fnc_dynamicText", [0,-2] select (isMultiplayer && isDedicated)];
+				[
+					["Shadow", "Damn! They just shot them! Those Syndikat bastards will get what's coming to 'em soon enough!",10.0,"RadioAmbient8"], AD_fnc_subtitle
+				] remoteExec ["call", [0,-2] select (isMultiplayer && isDedicated)];
 			};
 		};
 		
@@ -132,8 +149,9 @@ if (!isServer) exitWith {};
 	}
 	else
 	{
-		["RadioAmbient8"] call AD_fnc_soundAmp;
-		["<t size='0.6'><t color='#D22E2E'>Shadow:</t> Also, good job on saving those villagers earlier, sir! I sure they were very grateful. Shadow out.</t>", safeZoneX+0.45, safeZoneY+safeZoneH-0.3, 8, 0.25, 0, 198] remoteExec ["BIS_fnc_dynamicText", [0,-2] select (isMultiplayer && isDedicated)];
+		[
+			["Shadow", "Also, good job on saving those villagers earlier, sir! I sure they were very grateful. Shadow out.",10.0,"RadioAmbient8"], AD_fnc_subtitle
+		] remoteExec ["call", [0,-2] select (isMultiplayer && isDedicated)];
 	};
 };
 
@@ -153,7 +171,9 @@ if (!isServer) exitWith {};
 		} forEach units civsCaptive;
 		
 		// Villagers thank Fox
-		["<t size='0.6'><t color='#D22E2E'>Villager:</t> Oh thank God, I thought those guys were gonna kill us! Whoever you are, thank you. We owe you our lives!</t>", safeZoneX+0.45, safeZoneY+safeZoneH-0.3, 10, 0.25, 0, 198] remoteExec ["BIS_fnc_dynamicText", [0,-2] select (isMultiplayer && isDedicated)];
+		[
+			["Villager", "Oh thank God, I thought those guys were gonna kill us! Whoever you are, thank you. We owe you our lives!",10.0], AD_fnc_subtitle
+		] remoteExec ["call", [0,-2] select (isMultiplayer && isDedicated)];
 	};
 };
 
@@ -165,8 +185,9 @@ if (!isServer) exitWith {};
 	["killTask", "succeeded"] call FHQ_fnc_ttSetTaskState;
 	sleep 3.0;
 	
-	["RadioAmbient8"] call AD_fnc_soundAmp;
-	["<t size='0.6'><t color='#D22E2E'>Shadow:</t> Nice shooting, sir. I hope he burns for what he did to that village. Shadow out.</t>", safeZoneX+0.45, safeZoneY+safeZoneH-0.3, 10, 0.25, 0, 198] remoteExec ["BIS_fnc_dynamicText", [0,-2] select (isMultiplayer && isDedicated)];
+	[
+		["Shadow", "Nice shooting, sir. I hope he burns for what he did to that village. Shadow out.",10.0,"RadioAmbient8"], AD_fnc_subtitle
+	] remoteExec ["call", [0,-2] select (isMultiplayer && isDedicated)];
 };
 
 // Weapons cache task completed
@@ -175,10 +196,11 @@ if (!isServer) exitWith {};
 	waitUntil {sleep 1.0; ({alive _x} count [cache_1,cache_2,cache_3,cache_4,cache_5,cache_6]) == 0};
 	
 	["cacheTask", "succeeded"] call FHQ_fnc_ttSetTaskState;
-	sleep 3.0;	
+	sleep 3.0;
 	
-	["RadioAmbient6"] call AD_fnc_soundAmp;
-	["<t size='0.6'><t color='#D22E2E'>Shadow:</t> Good work, sir. Now we won't have to face Syndikat soldiers shooting at us with our own weapons! Continue on. Shadow out.</t>", safeZoneX+0.45, safeZoneY+safeZoneH-0.3, 10, 0.25, 0, 198] remoteExec ["BIS_fnc_dynamicText", [0,-2] select (isMultiplayer && isDedicated)];
+	[
+		["Shadow", "Good work, sir. Now we won't have to face Syndikat soldiers shooting at us with our own weapons! Continue on. Shadow out.",10.0,"RadioAmbient6"], AD_fnc_subtitle
+	] remoteExec ["call", [0,-2] select (isMultiplayer && isDedicated)];
 };
 
 // Complete primary objectives and activate extraction
